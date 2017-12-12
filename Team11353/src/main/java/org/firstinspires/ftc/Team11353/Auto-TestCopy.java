@@ -76,8 +76,8 @@ public class Autonomous_OpenRed_1 extends LinearOpMode {
     //test function to replace later repeated code
     public void RunAction (double action, double time, String message) throws InterruptedException {
         // action replaces Forward_Speed
-        robot.leftMotor.setPower(action);
-        robot.rightMotor.setPower(action);
+        robot.leftDrive.setPower(action);
+        robot.rightDrive.setPower(action);
         runtime.reset();
         while (opModeIsActive() && (runtime.seconds() < time)) {//time replaced 0.3
             telemetry.addData("Path", message, runtime.seconds());
@@ -118,8 +118,8 @@ public class Autonomous_OpenRed_1 extends LinearOpMode {
 
         // Step 2:  Spin right for 1.3 seconds
 
-        robot.leftMotor.setPower(TURN_SPEED);
-        robot.rightMotor.setPower(-TURN_SPEED);
+        robot.leftDrive.setPower(TURN_SPEED);
+        robot.rightDrive.setPower(-TURN_SPEED);
         runtime.reset();
         while (opModeIsActive() && (runtime.seconds() < 1.3)) {
             telemetry.addData("Path", "Leg 2: %2.5f S Elapsed", runtime.seconds());
@@ -128,8 +128,8 @@ public class Autonomous_OpenRed_1 extends LinearOpMode {
         }
 
         // Step 3:  Drive Backwards for 1 Second
-        robot.leftMotor.setPower(-FORWARD_SPEED);
-        robot.rightMotor.setPower(-FORWARD_SPEED);
+        robot.leftDrive.setPower(-FORWARD_SPEED);
+        robot.rightDrive.setPower(-FORWARD_SPEED);
         runtime.reset();
         while (opModeIsActive() && (runtime.seconds() < 1.0)) {
             telemetry.addData("Path", "Leg 3: %2.5f S Elapsed", runtime.seconds());
@@ -138,8 +138,8 @@ public class Autonomous_OpenRed_1 extends LinearOpMode {
         }
 
         // Step 4: Drive Forward for 3 Seconds (Alignment)
-        robot.leftMotor.setPower(ALIGNMENT_SPEED);
-        robot.rightMotor.setPower(ALIGNMENT_SPEED);
+        robot.leftDrive.setPower(ALIGNMENT_SPEED);
+        robot.rightDrive.setPower(ALIGNMENT_SPEED);
         runtime.reset();
         while (opModeIsActive() && (runtime.seconds() <3.0)) {
             telemetry.addData("Path", "Leg 4: %2.5f S Elapsed", runtime.seconds());
