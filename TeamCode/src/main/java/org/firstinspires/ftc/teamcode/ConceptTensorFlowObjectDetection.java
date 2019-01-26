@@ -27,17 +27,19 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.robotcontroller.external.samples;
+package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import java.util.List;
+
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection;
-import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
+import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
+
+import java.util.List;
 
 /**
  * This 2018-2019 OpMode illustrates the basics of using the TensorFlow Object Detection API to
@@ -68,7 +70,7 @@ public class ConceptTensorFlowObjectDetection extends LinearOpMode {
      * Once you've obtained a license key, copy the string from the Vuforia web site
      * and paste it in to your code on the next line, between the double quotes.
      */
-    private static final String VUFORIA_KEY = " -- YOUR NEW VUFORIA KEY GOES HERE  --- ";
+    private static final String VUFORIA_KEY = "Adt026z/////AAAAmcFEiUnuGURbkBcTUYKGvx0sTeUov6Bg5+Ms6+A2939igu+3N/ReTEIyz/lC9TKV1zvxYMqS2kbnDHie3svei7IAAC6gRUHXmkPkZZ50qiqJQO6m5R9Esz3GQRp1SWIuiXT8HGT3O940bzQdycONo/O8eHatcjAnQfEYLGzp1TIOnHm3a/VmMl9Sy6a64t2k8Bf0Vx8K9okP7uBVRm61PQRXQp5KYBCWkdqPNe6xmitJNF6aqMBOLDD1B6Nsqgi0eBMY9gQPFvAy22FT28sYh/i/qp3RB3LVwN/TRCdJDb0349NDy7C0HKx3AGdehMpc/V8MHwErvXqMX+qvtyXlRWcgOWzZUUK0tn9Om5QGVvzw";
 
     /**
      * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
