@@ -30,19 +30,21 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
 
 /**
+ * This file provides basic Telop driving for a Pushbot robot.
+ * The code is structured as an Iterative OpMode
+ *
  * This OpMode uses the common Pushbot hardware class to define the devices on the robot.
  * All device access is managed through the HardwarePushbot class.
- * The code is structured as a LinearOpMode
  *
- * This particular OpMode executes a POV Game style Teleop for a PushBot
- * In this mode the left stick moves the robot FWD and back, the Right stick turns left and right.
+ * This particular OpMode executes a basic Tank Drive Teleop for a PushBot
  * It raises and lowers the claw using the Gampad Y and A buttons respectively.
  * It also opens and closes the claws slowly using the left and right Bumper buttons.
  *
@@ -50,87 +52,100 @@ import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Shockbot: Teleop POV", group="Shockbot")
-@Disabled
-public class ShockTeleopPOV_Linear extends LinearOpMode {
+@TeleOp(name="ShockBot2: Teleop Tank2", group="Pushbot")
+//@Disabled
+public class ShockTeleopPOV_Linear extends OpMode{
 
     /* Declare OpMode members. */
-    HardwarePushbot robot           = new HardwarePushbot();   // Use a Pushbot's hardware
-    double          clawOffset      = 0;                       // Servo mid position
-    final double    CLAW_SPEED      = 0.02 ;                   // sets rate to move servo
+    public DcMotor fl = null;
+    public DcMotor fr = null;
+    public DcMotor bl = null;
+    public DcMotor br = null;
+    public DcMotor ap = null;
 
+
+    /*
+     * Code to run ONCE when the driver hits INIT
+     */
     @Override
-    public void runOpMode() {
-        double left;
-        double right;
-        double drive;
-        double turn;
-        double max;
-
+    public void init() {
         /* Initialize the hardware variables.
          * The init() method of the hardware class does all the work here
          */
-        robot.init(hardwareMap);
+
+        // rr = motor 1
+        // lf = motor 2
+        //
+//        fl = hardwareMap.get(DcMotor.class,"fl");
+//        fr = hardwareMap.get(DcMotor.class,"fr");
+//        bl = hardwareMap.get(DcMotor.class,"bl");
+//        br = hardwareMap.get(DcMotor.class,"br");
+        fl = hardwareMap.get(DcMotor.class,"LF");
+        fr = hardwareMap.get(DcMotor.class,"LR");
+        bl = hardwareMap.get(DcMotor.class,"RF");
+        br = hardwareMap.get(DcMotor.class,"RR");
+        ap = hardwareMap.get(DcMotor.class,"AP");
+
+        ap.setPower(0);
+        fl.setPower(0);
+        fr.setPower(0);
+        bl.setPower(0);
+        br.setPower(0);
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Say", "Hello Driver");    //
-        telemetry.update();
+    }
 
-        // Wait for the game to start (driver presses PLAY)
-        waitForStart();
+    /*
+     * Code to run REPEATEDLY after the driver hits INIT, but before they hit PLAY
+     */
+    @Override
+    public void init_loop() {
+    }
 
-        // run until the end of the match (driver presses STOP)
-        while (opModeIsActive()) {
+    /*
+     * Code to run ONCE when the driver hits PLAY
+     */
+    @Override
+    public void start() {
+    }
 
-            // Run wheels in POV mode (note: The joystick goes negative when pushed forwards, so negate it)
-            // In this mode the Left stick moves the robot fwd and back, the Right stick turns left and right.
-            // This way it's also easy to just drive straight, or just turn.
-            drive = -gamepad1.left_stick_y;
-            turn  =  gamepad1.right_stick_x;
+    /*
+     * Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
+     */
+    @Override
+    public void loop() {
+        double y;
+        double x;
+        double z;
+        double up;
+        double down;
 
-            // Combine drive and turn for blended motion.
-            left  = drive + turn;
-            right = drive - turn;
+        // Run wheels in tank mode (note: The joystick goes negative when pushed forwards, so negate it)
+        y = -gamepad1.left_stick_y;
+        x = -gamepad1.left_stick_x;
+        z = gamepad1.right_stick_x;
+        up = gamepad1.right_trigger;
+        down = gamepad1.left_trigger;
 
-            // Normalize the values so neither exceed +/- 1.0
-            max = Math.max(Math.abs(left), Math.abs(right));
-            if (max > 1.0)
-            {
-                left /= max;
-                right /= max;
-            }
-
-            // Output the safe vales to the motor drives.
-            robot.leftDrive.setPower(left);
-            robot.rightDrive.setPower(right);
-
-            // Use gamepad left & right Bumpers to open and close the claw
-            if (gamepad1.right_bumper)
-                clawOffset += CLAW_SPEED;
-            else if (gamepad1.left_bumper)
-                clawOffset -= CLAW_SPEED;
-
-            // Move both servos to new position.  Assume servos are mirror image of each other.
-            clawOffset = Range.clip(clawOffset, -0.5, 0.5);
-            robot.leftClaw.setPosition(robot.MID_SERVO + clawOffset);
-            robot.rightClaw.setPosition(robot.MID_SERVO - clawOffset);
-
-            // Use gamepad buttons to move arm up (Y) and down (A)
-            if (gamepad1.y)
-                robot.leftArm.setPower(robot.ARM_UP_POWER);
-            else if (gamepad1.a)
-                robot.leftArm.setPower(robot.ARM_DOWN_POWER);
-            else
-                robot.leftArm.setPower(0.0);
-
-            // Send telemetry message to signify robot running;
-            telemetry.addData("claw",  "Offset = %.2f", clawOffset);
-            telemetry.addData("left",  "%.2f", left);
-            telemetry.addData("right", "%.2f", right);
-            telemetry.update();
-
-            // Pace this loop so jaw action is reasonable speed.
-            sleep(50);
+        fl.setPower(y+z);
+        fr.setPower(x+z);
+        bl.setPower(-x+z);
+        br.setPower(-y+z);
+        if(up > 0){
+            ap.setPower(1);
         }
+        if(down > 0){
+            ap.setPower(-1);
+        }
+
+
+    }
+
+    /*
+     * Code to run ONCE after the driver hits STOP
+     */
+    @Override
+    public void stop() {
     }
 }
