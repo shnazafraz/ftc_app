@@ -71,6 +71,7 @@ public class PushbotAutoDriveByTime_Linear extends LinearOpMode {
 
     static final double     FORWARD_SPEED = 0.6;
     static final double     TURN_SPEED    = 0.5;
+    static final double     REVERSE_SPEED = 0.6;
 
     @Override
     public void runOpMode() {
@@ -102,7 +103,7 @@ public class PushbotAutoDriveByTime_Linear extends LinearOpMode {
 
         // Step 1:  Drive forward for 3 seconds
         fl.setPower(FORWARD_SPEED);
-        br.setPower(FORWARD_SPEED);
+        br.setPower(REVERSE_SPEED);
         runtime.reset();
         while (opModeIsActive() && (runtime.seconds() < 3.0)) {
             telemetry.addData("Path", "Leg 1: %2.5f S Elapsed", runtime.seconds());
