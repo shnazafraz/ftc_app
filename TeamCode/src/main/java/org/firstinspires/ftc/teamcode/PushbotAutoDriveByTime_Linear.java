@@ -71,7 +71,7 @@ public class PushbotAutoDriveByTime_Linear extends LinearOpMode {
 
     static final double     FORWARD_SPEED = 0.6;
     static final double     TURN_SPEED    = 0.5;
-    static final double     REVERSE_SPEED = 0.6;
+    static final double     REVERSE_SPEED = -0.6;
 
     @Override
     public void runOpMode() {
