@@ -125,18 +125,28 @@ public class ShockTeleopPOV_Linear extends OpMode{
         y = -gamepad1.left_stick_y;
         x = -gamepad1.left_stick_x;
         z = gamepad1.right_stick_x;
-        up = gamepad1.right_trigger;
-        down = gamepad1.left_trigger;
+        up = gamepad2.right_trigger;
+        down = gamepad2.left_trigger;
 
-        fl.setPower(y+z);
-        fr.setPower(x+z);
-        bl.setPower(-x+z);
-        br.setPower(-y+z);
-        if(up > 0){
-            ap.setPower(1);
+        fl.setPower(y + z);
+        fr.setPower(x + z);
+        bl.setPower(-x + z);
+        br.setPower(-y + z);
+
+
+        if (up > 0) {
+            ap.setPower(0.5);
+        } else {
+            ap.setPower(0);
         }
-        if(down > 0){
-            ap.setPower(-1);
+
+
+
+        if (down > 0){
+            ap.setPower(-0.5);
+        }
+        else {
+            ap.setPower(0);
         }
 
 
