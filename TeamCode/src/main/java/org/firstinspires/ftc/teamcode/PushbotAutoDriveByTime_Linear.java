@@ -66,12 +66,13 @@ public class PushbotAutoDriveByTime_Linear extends LinearOpMode {
     public DcMotor br = null;
     public DcMotor ap = null;
 
-    private ElapsedTime     runtime = new ElapsedTime();
+    private ElapsedTime runtime = new ElapsedTime();
 
 
-    static final double     FORWARD_SPEED = 0.6;
-    static final double     TURN_SPEED    = 0.5;
-    static final double     REVERSE_SPEED = -0.6;
+    static final double FORWARD_SPEED = 0.6;
+    static final double TURN_SPEED = 0.5;
+    static final double REVERSE_SPEED = -0.6;
+    static final double UP_SPEED = -0.5;
 
     @Override
     public void runOpMode() {
@@ -80,11 +81,11 @@ public class PushbotAutoDriveByTime_Linear extends LinearOpMode {
          * Initialize the drive system variables.
          * The init() method of the hardware class does all the work here
          */
-        fl = hardwareMap.get(DcMotor.class,"LF");
-        fr = hardwareMap.get(DcMotor.class,"LR");
-        bl = hardwareMap.get(DcMotor.class,"RF");
-        br = hardwareMap.get(DcMotor.class,"RR");
-        ap = hardwareMap.get(DcMotor.class,"AP");
+        fl = hardwareMap.get(DcMotor.class, "LF");
+        fr = hardwareMap.get(DcMotor.class, "LR");
+        bl = hardwareMap.get(DcMotor.class, "RF");
+        br = hardwareMap.get(DcMotor.class, "RR");
+        ap = hardwareMap.get(DcMotor.class, "AP");
 
         ap.setPower(0);
         fl.setPower(0);
@@ -101,14 +102,31 @@ public class PushbotAutoDriveByTime_Linear extends LinearOpMode {
 
         // Step through each leg of the path, ensuring that the Auto mode has not been stopped along the way
 
-        // Step 1:  Drive forward for 3 seconds
-        fl.setPower(FORWARD_SPEED);
-        br.setPower(REVERSE_SPEED);
+        // Step 1: arm extends to drop robot to the ground
+
         runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 3.0)) {
+        while (opModeIsActive() && (runtime.seconds() < 1.75))
+
+
+            // Step 2: robot drives to move from hook
+            ap.setPower(UP_SPEED);
+            fr.setPower(FORWARD_SPEED);
+        bl.setPower(REVERSE_SPEED);
+        runtime.reset();
+        while (opModeIsActive() && (runtime.seconds() < 0.5)) {
             telemetry.addData("Path", "Leg 1: %2.5f S Elapsed", runtime.seconds());
             telemetry.update();
         }
 
+        // Step 3:  Drive forward for 3 seconds
+        fl.setPower(FORWARD_SPEED);
+        br.setPower(REVERSE_SPEED);
+        runtime.reset();
+        while (opModeIsActive() && (runtime.seconds() < 2.1)) {
+            telemetry.addData("Path", "Leg 1: %2.5f S Elapsed", runtime.seconds());
+            telemetry.update();
+        }
     }
 }
+
+
